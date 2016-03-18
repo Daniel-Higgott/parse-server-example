@@ -39,3 +39,21 @@ Parse.Cloud.beforeSave("Post", function(request, response) {
                        }
                        response.success();
                        });
+
+Parse.Cloud.afterDelete(“Lists”, function(request) {
+  query = new Parse.Query(“Posts”);
+  query.equalTo("parent”, request.object);
+  query.find({
+    success: function(posts) {
+      Parse.Object.destroyAll(posts, {
+        success: function() {},
+        error: function(error) {
+          console.error("Error deleting related posts " + error.code + ": " + error.message);
+        }
+      });
+    },
+    error: function(error) {
+      console.error("Error finding related posts " + error.code + ": " + error.message);
+    }
+  });
+});
