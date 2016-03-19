@@ -63,18 +63,12 @@ Parse.Cloud.afterDelete(“Lists”, function(request) {
 Parse.Cloud.afterDelete("Lists", function(request) {
   var objectId = request.id;
   query = new Parse.Query("Posts");
-  query.equalTo("parent", objectId);
+  query.equalTo("listObjectId", objectId);
   query.find({
     success: function(posts) {
       Parse.Object.destroyAll(posts, {
-        success: function() {},
-        error: function(error) {
-          console.error("Error deleting related comments " + error.code + ": " + error.message);
-        }
-      });
+          success: function() {},
+          });
     },
-    error: function(error) {
-      console.error("Error finding related comments " + error.code + ": " + error.message);
-    }
   });
 });
