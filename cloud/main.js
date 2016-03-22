@@ -71,11 +71,6 @@ Parse.Cloud.afterDelete("Lists", function(request, response) {
           success: function() {},
           });
     },
-    
-    error: function(posts) {
-      response.error("Error finding related posts");
-      console.error("Error finding related posts " + error.code + ": " + error.message);
-    },
     }
   });
 });
