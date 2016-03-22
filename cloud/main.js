@@ -63,7 +63,7 @@ Parse.Cloud.afterDelete(“Lists”, function(request) {
 Parse.Cloud.afterDelete("Lists", function(request) {
   var objectId = request.object;
   var query = new Parse.Query("Posts");
-  query.equalTo("listObjectId", objectId);
+  query.equalTo("parent", objectId);
   query.find({
     success: function(posts) {
       Parse.Object.destroyAll(posts, {
