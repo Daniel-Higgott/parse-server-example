@@ -60,15 +60,22 @@ Parse.Cloud.afterDelete(“Lists”, function(request) {
 });
 */
 
-Parse.Cloud.afterDelete("Lists", function(request) {
+Parse.Cloud.afterDelete("Lists", function(request, response) {
   var objectId = request.object;
   var query = new Parse.Query("Posts");
   query.equalTo("parent", objectId);
   query.find({
     success: function(posts) {
+      
       Parse.Object.destroyAll(posts, {
           success: function() {},
           });
     },
+    
+    error: function(posts) {
+      response.error("Error finding related posts");
+      console.error("Error finding related posts " + error.code + ": " + error.message);
+    },
+    }
   });
 });
