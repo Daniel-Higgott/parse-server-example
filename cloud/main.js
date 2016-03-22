@@ -60,7 +60,7 @@ Parse.Cloud.afterDelete(“Lists”, function(request) {
 });
 */
 
-Parse.Cloud.afterDelete("Lists", function(request, response) {
+Parse.Cloud.afterDelete("Lists", function(request) {
   var objectId = request.object;
   var query = new Parse.Query("Posts");
   query.equalTo("parent", objectId);
