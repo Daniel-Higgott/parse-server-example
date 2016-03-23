@@ -40,26 +40,19 @@ Parse.Cloud.beforeSave("Post", function(request, response) {
                        response.success();
                        });
 
-/*
-Parse.Cloud.afterDelete(“Lists”, function(request) {
-  query = new Parse.Query(“Posts”);
-  query.equalTo("parent”, request.object);
-  query.find({
-    success: function(posts) {
-      Parse.Object.destroyAll(posts, {
-        success: function() {},
-        error: function(error) {
-          console.error("Error deleting related posts " + error.code + ": " + error.message);
-        }
-      });
-    },
-    error: function(error) {
-      console.error("Error finding related posts " + error.code + ": " + error.message);
-    }
-  });
-});
-*/
-
 Parse.Cloud.afterDelete("Lists", function(request, response) {
-response.success("List Deleted CC");
+console.log("afterDelete RAN");
+    var query = new Parse.Query("Posts");
+    query.equalTo("parent", request.object);
+    query.find({
+        success: function(posts) {
+            console.log("Found Child Posts");
+            console.log(posts);
+            Parse.Object.destroyAll(posts, {
+                success: function() {
+                    console.log("Successfully Deleted Related Posts")
+                }
+            })
+        }
+    })
 });
