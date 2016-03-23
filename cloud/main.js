@@ -47,8 +47,8 @@ Parse.Cloud.afterDelete("Lists", function(request) {
     query.equalTo("listObjectId", request.object.id);
     query.find({
         success: function(posts) {
+          Parse.Cloud.useMasterKey();
             Parse.Object.destroyAll(posts, {
-              Parse.Cloud.useMasterKey();
                 success: function() {
                 }
             })
