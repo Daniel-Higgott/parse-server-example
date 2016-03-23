@@ -40,19 +40,27 @@ Parse.Cloud.beforeSave("Post", function(request, response) {
                        response.success();
                        });
 
-Parse.Cloud.afterDelete("Lists", function(request, response) {
-console.log("afterDelete RAN");
+Parse.Cloud.afterDelete("Lists", function(request) {
     var query = new Parse.Query("Posts");
     query.equalTo("parent", request.object);
     query.find({
         success: function(posts) {
-            console.log("Found Child Posts");
-            console.log(posts);
             Parse.Object.destroyAll(posts, {
                 success: function() {
-                    console.log("Successfully Deleted Related Posts")
                 }
             })
         }
     })
 });
+
+/*
+Parse.Cloud.afterSave("PostToDraftList", function(request) {
+                      query = new Parse.Query("Posts");
+                      query.equalTo("listIsDraft", true);
+                      query.find({
+                                 success: function(results) {
+                                 response.success();
+                                 }
+                      })
+                      })
+*/
