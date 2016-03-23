@@ -42,7 +42,7 @@ Parse.Cloud.beforeSave("Post", function(request, response) {
 
 Parse.Cloud.afterDelete("Lists", function(request) {
     var query = new Parse.Query("Posts");
-    query.equalTo("_p_parent", request.object);
+    query.equalTo("listObjectId", request.object.id);
     query.find({
         success: function(posts) {
             Parse.Object.destroyAll(posts, {
