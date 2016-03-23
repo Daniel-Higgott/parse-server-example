@@ -60,16 +60,6 @@ Parse.Cloud.afterDelete(“Lists”, function(request) {
 });
 */
 
-Parse.Cloud.afterDelete("Lists", function(request) {
-  var objectId = request.object;
-  var query = new Parse.Query("Posts");
-  query.equalTo("parent", objectId);
-  query.find({
-    success: function(posts) {
-      
-     Parse.Object.destroyAll(posts, {
-          success: function() {},
-          });
-    },
-  });
+Parse.Cloud.afterDelete("Lists", function(request, response) {
+response.success("List Deleted CC");
 });
