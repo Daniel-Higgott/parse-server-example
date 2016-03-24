@@ -24,27 +24,9 @@ Parse.Cloud.beforeSave("Posts", function(request, response) {
                             response.success();
                        });
 
-Parse.Cloud.beforeSave("Post", function(request, response) {
-                       var listIsDraft = request.object.get("listIsDraft");
-                       var listUuid = request.object.get("listUuid");
-                       if (listIsDraft === true) {
-                       
-                       query = new Parse.Query("Lists");
-                       query.equalTo("uuid", listUuid);
-                       query.find({
-                                  success: function(results) {
-                                  console.log(results);
-                                  }
-                                  })
-                       
-                       request.object.set("listIsDraft", false);
-                       }
-                       response.success();
-                       });
-
 Parse.Cloud.afterDelete("Lists", function(request) {
     var query = new Parse.Query("Posts");
-    query.equalTo("listObjectId", request.object.id);
+    query.equalTo("parent", request.object);
     query.find({
         success: function(posts) {
           Parse.Cloud.useMasterKey();
@@ -56,14 +38,3 @@ Parse.Cloud.afterDelete("Lists", function(request) {
     })
 });
 
-/*
-Parse.Cloud.afterSave("PostToDraftList", function(request) {
-                      query = new Parse.Query("Posts");
-                      query.equalTo("listIsDraft", true);
-                      query.find({
-                                 success: function(results) {
-                                 response.success();
-                                 }
-                      })
-                      })
-*/
